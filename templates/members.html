@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Members · Libra{% endblock %}{% block heading %}Members{% endblock %}
+{% block content %}<div class="page-intro"><div><h2>Member directory</h2><p>Register and manage library members.</p></div></div>
+<div class="content-grid">
+<section class="panel"><div class="panel-head"><div><h3>Register member</h3><p>Basic contact information</p></div></div><form method="post" class="form-grid">
+<label>Full name<input name="name" required placeholder="Member name"></label><label>Email address<input name="email" type="email" required placeholder="name@example.com"></label><label>Phone <span class="muted">(optional)</span><input name="phone" placeholder="Phone number"></label><div class="form-actions"><button class="btn primary">Register member</button></div></form></section>
+<section class="panel"><div class="panel-head"><div><h3>Registered members</h3><p>{{ members|length }} members</p></div></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead><tbody>{% for member in members %}<tr><td class="strong">{{ member.name }}</td><td>{{ member.email }}</td><td>{{ member.phone or '—' }}</td></tr>{% else %}<tr><td colspan="3">No members yet.</td></tr>{% endfor %}</tbody></table></div></section></div>{% endblock %}

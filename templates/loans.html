@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Issue & return · Libra{% endblock %}{% block heading %}Issue & return{% endblock %}
+{% block content %}<div class="page-intro"><div><h2>Circulation desk</h2><p>Issue books for 14 days and process returns.</p></div></div>
+<div class="content-grid">
+<section class="panel"><div class="panel-head"><div><h3>Issue a book</h3><p>Select an available title and member</p></div></div><form method="post" class="form-grid"><input type="hidden" name="action" value="issue">
+<label class="full">Book<select name="book_id" required>{% for book in available_books %}<option value="{{ book.id }}">{{ book.title }} ({{ book.available_copies }} available)</option>{% endfor %}</select></label>
+<label class="full">Member<select name="member_id" required>{% for member in members %}<option value="{{ member.id }}">{{ member.name }}</option>{% endfor %}</select></label>
+<div class="form-actions"><button class="btn primary" {% if not available_books or not members %}disabled{% endif %}>Issue book</button></div></form></section>
+<section class="panel"><div class="panel-head"><div><h3>Active loans</h3><p>{{ active|length }} books currently issued</p></div></div><div class="table-wrap"><table><thead><tr><th>Book / Member</th><th>Due date</th><th>Status</th><th></th></tr></thead><tbody>
+{% for loan in active %}<tr><td><div class="strong">{{ loan.title }}</div><small>{{ loan.name }}</small></td><td>{{ loan.due_date }}</td><td>{% if loan.overdue %}<span class="pill overdue">Overdue</span>{% else %}<span class="pill active">Issued</span>{% endif %}</td><td><form method="post"><input type="hidden" name="action" value="return"><input type="hidden" name="loan_id" value="{{ loan.id }}"><button class="btn small secondary">Return</button></form></td></tr>{% else %}<tr><td colspan="4">No active loans.</td></tr>{% endfor %}
+</tbody></table></div></section></div>
+<section class="panel"><div class="panel-head"><div><h3>Return history</h3><p>Recent completed loans and fines</p></div></div><div class="table-wrap"><table><thead><tr><th>Book</th><th>Member</th><th>Returned</th><th>Fine</th></tr></thead><tbody>{% for row in history %}<tr><td class="strong">{{ row.title }}</td><td>{{ row.name }}</td><td>{{ row.return_date }}</td><td>₹{{ '%.2f'|format(row.fine) }}</td></tr>{% else %}<tr><td colspan="4">No returned books yet.</td></tr>{% endfor %}</tbody></table></div></section>{% endblock %}

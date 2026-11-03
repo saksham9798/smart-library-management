@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Smart Library{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">L</span><div><strong>Libra</strong><small>Library workspace</small></div></div>
+    <nav>
+      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' else '' }}">▦ <span>Dashboard</span></a>
+      <a href="{{ url_for('books') }}" class="{{ 'active' if request.endpoint == 'books' else '' }}">▤ <span>Book catalog</span></a>
+      <a href="{{ url_for('members') }}" class="{{ 'active' if request.endpoint == 'members' else '' }}">♙ <span>Members</span></a>
+      <a href="{{ url_for('loans') }}" class="{{ 'active' if request.endpoint == 'loans' else '' }}">⇄ <span>Issue & return</span></a>
+      <a href="{{ url_for('overdue') }}" class="{{ 'active' if request.endpoint == 'overdue' else '' }}">◷ <span>Overdue books</span></a>
+    </nav>
+    <div class="sidebar-bottom"><span class="status-dot"></span> Local demo database</div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><span class="eyebrow">LIBRARY MANAGEMENT</span><h1>{% block heading %}Dashboard{% endblock %}</h1></div><div class="avatar">SL</div></header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <footer>Smart Library Management System · Flask + SQLite demo · PL/SQL scripts included</footer>
+  </main>
+</body>
+</html>
